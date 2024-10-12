@@ -37,4 +37,4 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -chdir="./terraform" -input=false
+      run: terraform -chdir="./terraform" plan -input=false
