@@ -1,7 +1,7 @@
 Parameters:
   Repo:
     Description: The GitHub organization/repo for which the OIDC provider is set up
-    Type: String
+    Type: String 
 Resources:
   MyOIDCProvider:
     Type: 'AWS::IAM::OIDCProvider'
