@@ -2,7 +2,7 @@ name: 'Drift Detection'
 
 on:
   schedule:
-    - cron: '*/3 * * * *'
+    - cron: '*/45 * * * *'
 jobs:
   detect_drift:
     uses: ./.github/workflows/plan.yml
