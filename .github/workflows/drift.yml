@@ -1,0 +1,12 @@
+name: 'Drift Detection'
+
+on:
+    schedule:
+        - cron: '*/5 * * * *'
+jobs:
+  detect_drift:
+    uses: ./.github/workflows/terraform.yml
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
