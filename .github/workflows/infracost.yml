@@ -10,8 +10,6 @@ jobs:
     if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
     runs-on: ubuntu-latest
     environment: production
-    env:
-      GH_TOKEN: ${{ github.token }}
 
     permissions:
       contents: read
@@ -31,7 +29,7 @@ jobs:
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline
         run: |
-          infracost breakdown --path=./terraform \
+          infracost breakdown --path=. \
                               --format=json \
                               --out-file=/tmp/infracost-base.json
 
