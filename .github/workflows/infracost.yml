@@ -1,3 +1,9 @@
+name: 'Run Infracost'
+
+on:
+  pull_request:
+    types: [opened, synchronize, closed]
+
 jobs:
   infracost-pull-request-checks:
     name: Infracost Pull Request Checks
@@ -50,3 +56,5 @@ jobs:
                                       --policy-path ./policies/cost.rego
       - name: See infracost.json
         run: cat /tmp/infracost.json
+
+  
