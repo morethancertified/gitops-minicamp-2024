@@ -46,5 +46,3 @@ jobs:
                                       --pull-request=${{ github.event.pull_request.number }} \
                                       --behavior=update \
                                       --policy-path ./policies/cost.rego
-      - name: See infracost.json
-        run: cat /tmp/infracost.json
