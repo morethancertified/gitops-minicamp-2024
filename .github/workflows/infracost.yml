@@ -1,19 +1,15 @@
-name: 'Run Infracost'
-
-on:
-  pull_request:
-    types: [opened, synchronize, closed]
-
 jobs:
   infracost-pull-request-checks:
     name: Infracost Pull Request Checks
     if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
     runs-on: ubuntu-latest
     environment: production
+    env:
+      GH_TOKEN: ${{ github.token }}
+
     permissions:
       contents: read
       pull-requests: write # Required to post comments
-
     steps:
       - name: Setup Infracost
         uses: infracost/actions/setup@v3
@@ -29,7 +25,7 @@ jobs:
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline
         run: |
-          infracost breakdown --path=. \
+          infracost breakdown --path=./terraform \
                               --format=json \
                               --out-file=/tmp/infracost-base.json
 
@@ -44,14 +40,13 @@ jobs:
                           --format=json \
                           --compare-to=/tmp/infracost-base.json \
                           --out-file=/tmp/infracost.json
-
       - name: Post Infracost comment
         run: |
             infracost comment github --path=/tmp/infracost.json \
-                                     --repo=$GITHUB_REPOSITORY \
-                                     --github-token=${{ github.token }} \
-                                     --pull-request=${{ github.event.pull_request.number }} \
-                                     --behavior=update
-                                     --policy-path ../policies/cost.rego
-
-  
+                                      --repo=$GITHUB_REPOSITORY \
+                                      --github-token=${{ github.token }} \
+                                      --pull-request=${{ github.event.pull_request.number }} \
+                                      --behavior=update \
+                                      --policy-path ./policies/cost.rego
+      - name: See infracost.json
+        run: cat /tmp/infracost.json
