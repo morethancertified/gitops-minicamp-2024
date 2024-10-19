@@ -46,9 +46,20 @@ jobs:
     - name: Terraform Format
       run: terraform fmt -check
 
-    # Generates an execution plan for Terraform
+      # Terraform Plan
     - name: Terraform Plan
-      run: terraform plan -input=false
+      id: plan
+      run: |
+        terraform plan -out=plan.tfplan
+        terraform show -json plan.tfplan > /tmp/plan.json
+        cat /tmp/plan.json
 
-    - name: View Terraform Plan
-      run: terraform plan -no-color -json
+    - name: Setup OPA
+      uses: open-policy-agent/setup-opa@v2
+      with:
+        version: latest
+
+    - name: Run OPA Tests
+      run: |
+        opaout=$(opa eval --data ../policies/plan.rego --input /tmp/plan.json "data.terraform.deny" | jq -r '.result[].expressions[].value[]')
+        [ -z "$opaout" ] && exit 0 || echo "$opaout" && gh pr comment ${{ github.event.pull_request.number }} --body "### $opaout" && exit 1
