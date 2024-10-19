@@ -65,4 +65,4 @@ jobs:
     - name: Run OPA Tests
       run: |
         opaout=$(opa eval --data ../policies/plan.rego --input /tmp/plan.json "data.terraform.deny" | jq -r '.result[].expressions[].value[]')
-        [ -z "$opaout" ] && exit 0 || echo "$opaout" && gh pr comment ${{ github.event.pull_request.number }} --body "### $opaout" && exit 1
+        [ -z "$opaout" ] && exit 0 || echo "$opaout" && gh pr comment 9 --body "### $opaout" && exit 1
