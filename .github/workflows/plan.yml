@@ -51,4 +51,4 @@ jobs:
       run: terraform plan -input=false
 
     - name: View Terraform Plan
-      run: terraform plan -json
+      run: terraform plan -no-color -json
