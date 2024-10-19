@@ -49,3 +49,6 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false
+
+    - name: View Terraform Plan
+      run: terraform plan -json
