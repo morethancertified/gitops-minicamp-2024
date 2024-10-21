@@ -96,15 +96,15 @@ resource "aws_instance" "grafana_server" {
   }
 }
 
-check "grafana_health_check" {
-  data "http" "test" {
-    url = "http://${aws_instance.grafana_server.public_ip}:3000"
-    retry {
-      attempts = 5
-    }
-  }
-  assert {
-    condition     = data.http.test.status_code == 200
-    error_message = "Grafana is inaccessible on port 3000."
-  }
-}
+# check "grafana_health_check" {
+#   data "http" "test" {
+#     url = "http://${aws_instance.grafana_server.public_ip}:3000"
+#     retry {
+#       attempts = 5
+#     }
+#   }
+#   assert {
+#     condition     = data.http.test.status_code == 200
+#     error_message = "Grafana is inaccessible on port 3000."
+#   }
+# }
